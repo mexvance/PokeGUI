@@ -5,28 +5,28 @@ using System.Text;
 
 namespace PokeGUI.Data
 {
-    public class PokeTypeConstants
+    public static class PokeTypeConstants
     {
-        public PokeType Normal = new PokeType("normal");
-        public PokeType Fighting = new PokeType("fighting");
-        public PokeType Flying = new PokeType("flying");
-        public PokeType Poison = new PokeType("poison");
-        public PokeType Ground = new PokeType("ground");
-        public PokeType Rock = new PokeType("rock");
-        public PokeType Bug = new PokeType("bug");
-        public PokeType Ghost = new PokeType("ghost");
-        public PokeType Steel = new PokeType("steel");
-        public PokeType Fire = new PokeType("fire");
-        public PokeType Water = new PokeType("water");
-        public PokeType Grass = new PokeType("grass");
-        public PokeType Electric = new PokeType("electric");
-        public PokeType Psychic = new PokeType("psychic");
-        public PokeType Ice = new PokeType("ice");
-        public PokeType Dragon = new PokeType("dragon");
-        public PokeType Fairy = new PokeType("fairy");
-        public PokeType Unkown = new PokeType("unknown");
-        public PokeType Shadow = new PokeType("shadow");
-        public PokeType Dark = new PokeType("dark");
+        public static PokeType Normal = new PokeType("normal");
+        public static PokeType Fighting = new PokeType("fighting");
+        public static PokeType Flying = new PokeType("flying");
+        public static PokeType Poison = new PokeType("poison");
+        public static PokeType Ground = new PokeType("ground");
+        public static PokeType Rock = new PokeType("rock");
+        public static PokeType Bug = new PokeType("bug");
+        public static PokeType Ghost = new PokeType("ghost");
+        public static PokeType Steel = new PokeType("steel");
+        public static PokeType Fire = new PokeType("fire");
+        public static PokeType Water = new PokeType("water");
+        public static PokeType Grass = new PokeType("grass");
+        public static PokeType Electric = new PokeType("electric");
+        public static PokeType Psychic = new PokeType("psychic");
+        public static PokeType Ice = new PokeType("ice");
+        public static PokeType Dragon = new PokeType("dragon");
+        public static PokeType Fairy = new PokeType("fairy");
+        public static PokeType Unkown = new PokeType("unknown");
+        public static PokeType Shadow = new PokeType("shadow");
+        public static PokeType Dark = new PokeType("dark");
        
     }
 }

@@ -47,6 +47,18 @@ namespace PokeGUI.ViewModels
             }
         }
 
+        private PokeType selectedPokeType;
+
+        public PokeType SelectedPokeType
+        {
+            get { return selectedPokeType; }
+            set {
+                SetProperty(ref selectedPokeType, value);
+                RaisePropertyChanged(nameof(PokemonFilteredCollection));
+            }
+        }
+
+
 
         public ObservableCollection<Pokemon> PokemonFilteredCollection
         {
