@@ -16,7 +16,7 @@ namespace PokeGUI.Views
     /// <summary>
     /// Interaction logic for PokedexView.xaml
     /// </summary>
-    public partial class PokedexView : Page
+    public partial class PokedexView : UserControl
     {
         public PokedexView()
         {

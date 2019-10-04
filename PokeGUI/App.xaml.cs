@@ -10,6 +10,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using PokeGUI.Services;
 
 namespace PokeGUI
 {
@@ -25,6 +26,7 @@ namespace PokeGUI
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.Register(typeof(IPokemonRegistry), typeof(DummyPokemonRegistry));
             containerRegistry.RegisterForNavigation<PokedexView>();
         }
 
