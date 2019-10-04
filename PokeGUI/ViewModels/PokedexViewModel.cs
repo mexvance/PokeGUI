@@ -64,15 +64,34 @@ namespace PokeGUI.ViewModels
         {
             get
             {
-                return FilteredPokemon();
+                return new ObservableCollection<Pokemon>(FilterPokemonByName(FilterPokemonByType()));
             }
         }
 
-        public ObservableCollection<Pokemon> FilteredPokemon()
+        public IEnumerable<Pokemon> FilterPokemonByName(List<Pokemon> pokeList)
         {
-            return new ObservableCollection<Pokemon>( 
-                PokemonCollection.FindAll(p => p.Name.StartsWith(PokemonNameFilter))
-                );
+            if (string.IsNullOrEmpty(PokemonNameFilter) == false)
+            {
+                return pokeList.FindAll(p => p.Name.StartsWith(PokemonNameFilter));
+            }
+            else
+            {
+                return pokeList;
+            }
+        }
+        public List<Pokemon> FilterPokemonByType()
+        {
+            if (SelectedPokeType != null)
+            {
+                return PokemonCollection.FindAll(p =>
+                                p.Type1 == SelectedPokeType || (p.Type2 != null ? p.Type2 == SelectedPokeType : false));
+            } 
+            else
+            {
+                return PokemonCollection;
+            }
+
+            
         }
 
     }
