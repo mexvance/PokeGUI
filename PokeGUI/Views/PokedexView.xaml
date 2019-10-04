@@ -10,8 +10,29 @@
 
     <Grid>
         <DataGrid ItemsSource="{Binding PokemonCollection}"
-                  AutoGenerateColumns="True">
-            
+                  AutoGenerateColumns="false">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID"
+                                    IsReadOnly="True"
+                                    Binding="{Binding PokeId}">
+                    
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Name"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Name}">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Type"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Type1.TypeName}">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Type"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Type2.TypeName}">
+
+                </DataGridTextColumn>
+            </DataGrid.Columns>
         </DataGrid>
         
     </Grid>
