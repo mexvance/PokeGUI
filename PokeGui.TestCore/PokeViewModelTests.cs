@@ -38,8 +38,6 @@ namespace PokeTest.TestCore
 
             pokedexViewModel.PokemonFilteredCollection.Count.Should().Be(1);
             pokedexViewModel.PokemonFilteredCollection.First().Name.Should().Be("bbb");
-
-
         }
     }
 

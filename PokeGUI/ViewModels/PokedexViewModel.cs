@@ -19,25 +19,49 @@ namespace PokeGUI.ViewModels
         }
         public async void LoadAsync()
         {
-            PokemonCollection = new ObservableCollection<Pokemon>(await pokemonRegistry.GetAllPokemonAsync());
+            PokemonCollection = new List<Pokemon>(await pokemonRegistry.GetAllPokemonAsync());
 
         }
 
-        private ObservableCollection<Pokemon> pokemonCollection;
-        public string PokemonNameFilter;
 
-
-
-        public ObservableCollection<Pokemon> PokemonCollection
+        private string pokemonNameFilter;
+        public string PokemonNameFilter
         {
-            get { return pokemonCollection; }
-            set { 
-                SetProperty(ref pokemonCollection, value);
+            get => pokemonNameFilter;
+            set
+            {
+                SetProperty(ref pokemonNameFilter, value);
+                RaisePropertyChanged(nameof(PokemonFilteredCollection));
             }
         }
 
 
-        public ObservableCollection<Pokemon> PokemonFilteredCollection;
+
+        private List<Pokemon> pokemonCollection;
+        public List<Pokemon> PokemonCollection
+        {
+            get { return pokemonCollection; }
+            set { 
+                SetProperty(ref pokemonCollection, value);
+                RaisePropertyChanged(nameof(PokemonFilteredCollection));
+            }
+        }
+
+
+        public ObservableCollection<Pokemon> PokemonFilteredCollection
+        {
+            get
+            {
+                return FilteredPokemon();
+            }
+        }
+
+        public ObservableCollection<Pokemon> FilteredPokemon()
+        {
+            return new ObservableCollection<Pokemon>( 
+                PokemonCollection.FindAll(p => p.Name.StartsWith(PokemonNameFilter))
+                );
+        }
 
     }
 }
