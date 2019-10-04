@@ -81,17 +81,10 @@ namespace PokeGUI.ViewModels
         }
         public List<Pokemon> FilterPokemonByType()
         {
-            if (SelectedPokeType != null)
-            {
-                return PokemonCollection.FindAll(p =>
-                                p.Type1 == SelectedPokeType || (p.Type2 != null ? p.Type2 == SelectedPokeType : false));
-            } 
-            else
-            {
-                return PokemonCollection;
-            }
-
-            
+            return SelectedPokeType != null
+                ? PokemonCollection.FindAll(p =>
+                        p.Type1 == SelectedPokeType || (p.Type2 != null ? p.Type2 == SelectedPokeType : false))
+                : PokemonCollection;
         }
 
     }
