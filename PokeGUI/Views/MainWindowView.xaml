@@ -1,0 +1,26 @@
+﻿<Window x:Class="PokeGUI.Views.MainWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PokeGUI.Views"
+        mc:Ignorable="d"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        Title="MainWindowView" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="YAY POKEMON! SEARCH THEM HERE!!!!!!!!!"/>
+        <Button Content="Click me for Pokemans"
+                Command="{Binding GoToPokedex}"/>
+
+        <ContentControl Grid.Row="1"
+                        prism:RegionManager.RegionName="ContentRegion" />
+
+
+    </Grid>
+</Window>
