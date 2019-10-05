@@ -88,7 +88,7 @@ namespace PokeTest.TestCore
         public void CanFilterByTypeAndName()
         {
             var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object);
-            pokedexViewModel.PokemonNameFilter = "a";
+            pokedexViewModel.PokemonNameFilter = "d";
             pokedexViewModel.SelectedPokeType = PokeTypeConstants.Electric;
 
             pokedexViewModel.PokemonFilteredCollection.Count.Should().Be(3);
