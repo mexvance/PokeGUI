@@ -4,10 +4,12 @@ using Prism.Mvvm;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using guiWapper1;
+using System.Windows;
 
 namespace PokeGUI.ViewModels
 {
-    public class PokedexViewModel : BindableBase
+    public class PokedexViewModel : BindableDataErrorInfoBase
     {
         private readonly IPokemonRegistry pokemonRegistry;
         private readonly PokeTypeRegistry pokeTypeRegistry;
@@ -55,11 +57,47 @@ namespace PokeGUI.ViewModels
             get => pokemonNameFilter;
             set
             {
+
+
                 SetProperty(ref pokemonNameFilter, value);
                 RaisePropertyChanged(nameof(PokemonFilteredCollection));
+                if (value.Contains(" "))
+                {
+                    NameError = "Name cannot have a space";
+                }
+                else if (PokemonFilteredCollection.Count <= 0)
+                {
+                    NameError = "There isn't a pokemon with these search values in your list";
+                }
+                else
+                {
+                    NameError = null;
+                }
+
             }
         }
 
+        private string nameError;
+        public string NameError
+        {
+            get { return nameError; }
+            set
+            {
+                SetProperty(ref nameError, value);
+                ErrorDictionary[nameof(PokemonNameFilter)] = value;
+                nameErrorVisibility = value?.Length > 0 ? Visibility.Collapsed : Visibility.Visible;
+                //RepoButtonDisable = RepoErrorVisibility.Equals(Visibility.Collapsed) ? false : true;
+                //ErrorList = Error;
+            }
+        }
+
+
+        private Visibility nameErrorVisibility;
+        public Visibility NameErrorVisibility
+        {
+            get { return nameErrorVisibility; }
+            set { SetProperty(ref nameErrorVisibility, value); }
+        }
         private List<Pokemon> pokemonCollection;
         public List<Pokemon> PokemonCollection
         {
@@ -71,12 +109,21 @@ namespace PokeGUI.ViewModels
         }
 
         private PokeType selectedPokeType;
+
         public PokeType SelectedPokeType
         {
             get { return selectedPokeType; }
             set {
                 SetProperty(ref selectedPokeType, value);
                 RaisePropertyChanged(nameof(PokemonFilteredCollection));
+                if (PokemonFilteredCollection.Count <= 0)
+                {
+                    NameError = "There isn't a pokemon with these search values in your list";
+                }
+                else
+                {
+                    NameError = null;
+                }
             }
         }
 
