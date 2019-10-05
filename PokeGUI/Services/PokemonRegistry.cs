@@ -10,7 +10,7 @@ namespace PokeGUI.Services
 {
     public class PokemonRegistry : IPokemonRegistry
     {
-        public async Task<ICollection<Pokemon>> GetAllPokemonAsync()
+        public async Task<IEnumerable<Pokemon>> GetAllPokemonAsync()
         {
             var client = new HttpClient();
             var response = await client.GetAsync("https://pokeapi.co/api/v2/pokemon?offset=0&limit=10");

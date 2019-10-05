@@ -7,6 +7,6 @@ namespace PokeGUI.Services
     public interface IPokemonRegistry
     {
         Task<Pokemon> CreatePokemonObject(string name, string url);
-        Task<ICollection<Pokemon>> GetAllPokemonAsync();
+        Task<IEnumerable<Pokemon>> GetAllPokemonAsync();
     }
 }

@@ -15,9 +15,9 @@ namespace PokeGUI.Services
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<Pokemon>> GetAllPokemonAsync()
+        public Task<IEnumerable<Pokemon>> GetAllPokemonAsync()
         {
-            var task = Task<ICollection<Pokemon>>.Factory.StartNew(() =>
+            var task = Task<IEnumerable<Pokemon>>.Factory.StartNew(() =>
             {
                 var jsonFile = File.ReadAllText("../../../../pokeList.json");
                 var pokelist = JsonConvert.DeserializeObject<List<Pokemon>>(jsonFile);
