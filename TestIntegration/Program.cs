@@ -17,7 +17,7 @@ namespace TestIntegration
             waitThis.Wait();
             var pokelist = waitThis.Result;
 
-            // real call
+            //real call
             //var pokeReg = new PokemonRegistry();
             //var test = pokeReg.GetAllPokemonAsync();
             //test.Wait();

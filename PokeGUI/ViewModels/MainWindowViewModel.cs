@@ -5,6 +5,7 @@ using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 
 namespace PokeGUI.ViewModels
 {
@@ -16,8 +17,7 @@ namespace PokeGUI.ViewModels
         {
             
             this.regionManager = regionManager;
-            //regionManager.AddToRegion("ContentRegion", "PokedexView");
-            //.RegisterViewWithRegion("ContentRegion", typeof(PokedexView));
+            GoToPokedexVisibility = Visibility.Visible;
         }
         private DelegateCommand goToPokedex;
 
@@ -25,8 +25,17 @@ namespace PokeGUI.ViewModels
                 ()=>
                 {
                     regionManager.RequestNavigate("ContentRegion", "PokedexView");
+                    GoToPokedexVisibility = Visibility.Collapsed;
                 }
             ));
+
+        private Visibility goToPokedexVisibility;
+
+        public Visibility GoToPokedexVisibility
+        {
+            get { return goToPokedexVisibility; }
+            set { SetProperty(ref goToPokedexVisibility, value); }
+        }
 
 
     }

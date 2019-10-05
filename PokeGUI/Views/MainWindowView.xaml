@@ -16,7 +16,8 @@
 
         <TextBlock Text="YAY POKEMON! SEARCH THEM HERE!!!!!!!!!"/>
         <Button Content="Click me for Pokemans"
-                Command="{Binding GoToPokedex}"/>
+                Command="{Binding GoToPokedex}"
+                Visibility="{Binding GoToPokedexVisibility}"/>
 
         <ContentControl Grid.Row="1"
                         prism:RegionManager.RegionName="ContentRegion" />

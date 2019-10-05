@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using guiWapper1;
 using System.Windows;
+using Prism.Commands;
 
 namespace PokeGUI.ViewModels
 {
@@ -13,11 +14,15 @@ namespace PokeGUI.ViewModels
     {
         private readonly IPokemonRegistry pokemonRegistry;
         private readonly PokeTypeRegistry pokeTypeRegistry;
+        private readonly IPokePdfService pokePdfService;
 
-        public PokedexViewModel(IPokemonRegistry pokemonRegistry, PokeTypeRegistry pokeTypeRegistry)
+        public PokedexViewModel(IPokemonRegistry pokemonRegistry, 
+                                PokeTypeRegistry pokeTypeRegistry,
+                                IPokePdfService pokePdfService)
         {
             this.pokemonRegistry = pokemonRegistry;
             this.pokeTypeRegistry = pokeTypeRegistry;
+            this.pokePdfService = pokePdfService;
             LoadPokemonTask = LoadAsync();
         }
         
@@ -159,5 +164,13 @@ namespace PokeGUI.ViewModels
             }
            
         }
+
+        private DelegateCommand printPokemon;
+
+        public DelegateCommand PrintPokemon => printPokemon ?? (printPokemon = new DelegateCommand(() =>
+        {
+            pokePdfService.WritePdf(PokemonFilteredCollection);
+        }));
+
     }
 }

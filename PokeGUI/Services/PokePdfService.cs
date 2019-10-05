@@ -2,19 +2,20 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Windows.Controls;
 using OpenHtmlToPdf;
 using PokeGUI.Models;
 
 namespace PokeGUI.Services
 {
-    public class PokePdfService 
+    public class PokePdfService : IPokePdfService
     {
         public bool WritePdf(IEnumerable<Pokemon> pokemonCollection)
         {
             var htmlBuilder = new StringBuilder();
             htmlBuilder.Append(topOfPdf);
 
-            foreach(var pokemon in pokemonCollection)
+            foreach (var pokemon in pokemonCollection)
             {
                 htmlBuilder.Append($@"
                     <tr>
@@ -22,7 +23,7 @@ namespace PokeGUI.Services
                         <td class='desc'>{pokemon.Name}</td>
                         <td class='unit'>{pokemon.Type1}</td>
                         <td class='qty'>{pokemon.Type2}</td>
-                        <td class='white'></td>
+                        <td class='white'><img src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{pokemon.PokeId}.png' /></td>
                     </tr>");
             }
 
@@ -39,10 +40,14 @@ namespace PokeGUI.Services
                 .Portrait()
                 .Content();
 
-            var fileName = "../../../../Pokemon.pdf";
+            var fileName = @"..\..\..\..\Pokemon.pdf";
 
             File.WriteAllBytes(fileName, pdf);
 
+            Process process = new Process();
+            process.StartInfo.FileName = fileName;
+            process.StartInfo.UseShellExecute = true;
+            process.Start();
             return true;
         }
 
@@ -101,7 +106,7 @@ namespace PokeGUI.Services
         }
         table th,
         table td {
-            padding: 20px;
+            padding: 5px;
             background: #EEEEEE;
             text-align: center;
             border-bottom: 1px solid #FFFFFF;
