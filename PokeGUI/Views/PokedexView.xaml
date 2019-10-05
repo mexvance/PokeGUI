@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PokeGUI.Views"
       xmlns:conv="clr-namespace:PokeGUI.Converters"
+      xmlns:fa="http://schemas.fontawesome.io/icons/"
       mc:Ignorable="d" 
       xmlns:prism="http://prismlibrary.com/"
       prism:ViewModelLocator.AutoWireViewModel="True">
@@ -14,6 +15,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
@@ -40,8 +42,9 @@
                   CanUserResizeRows="False"
                   CanUserResizeColumns="False"
                   HorizontalAlignment="Center"
-                  VerticalAlignment="Top">
-            <DataGrid.Columns>
+                  VerticalAlignment="Top"
+                  Visibility="{Binding GridVisibility}">
+            <DataGrid.Columns >
                 <DataGridTextColumn Header="ID"
                                     IsReadOnly="True"
                                     Binding="{Binding PokeId}">
@@ -61,12 +64,35 @@
                                     Binding="{Binding Type2.TypeName}">
 
                 </DataGridTextColumn>
+                <DataGridTemplateColumn Header="Image"
+                                    IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding Image}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-
-        <Button Grid.Row="3"
+        <StackPanel Grid.Row="3"
+                    Visibility="{Binding LoadingListVisibility}"
+                    HorizontalAlignment="Center"
+                    Background="Gray">
+            <fa:ImageAwesome Icon="Cog" 
+                         Spin="True" 
+                         SpinDuration="2" 
+                         Height="150"
+                         Foreground="Cyan"
+                         Margin="0,10,0,10"/>
+            <TextBlock Text="Loading Pokemon..."
+                       Foreground="Cyan"
+                       FontSize="40"
+                       FontWeight="Bold"/>
+        </StackPanel>
+        <Button Grid.Row="4"
                 HorizontalAlignment="Center"
-                Width="400"
+                Width="300"
                 Content="Print Your Pokemon!"
                 Command="{Binding PrintPokemon}"/>
 

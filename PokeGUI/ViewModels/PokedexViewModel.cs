@@ -28,9 +28,12 @@ namespace PokeGUI.ViewModels
         
         public Task LoadAsync()
         {
+            LoadingListVisibility = Visibility.Visible;
+            GridVisibility = Visibility.Visible;
             return Task.Run( async () =>
             {
                 PokemonCollection = new List<Pokemon>(await pokemonRegistry.GetAllPokemonAsync());
+                LoadingListVisibility = Visibility.Collapsed;
                 PokeTypes = pokeTypeRegistry.All();
                 SelectedPokeType = pokeTypeRegistry.None;
             });
@@ -91,8 +94,6 @@ namespace PokeGUI.ViewModels
                 SetProperty(ref nameError, value);
                 ErrorDictionary[nameof(PokemonNameFilter)] = value;
                 nameErrorVisibility = value?.Length > 0 ? Visibility.Collapsed : Visibility.Visible;
-                //RepoButtonDisable = RepoErrorVisibility.Equals(Visibility.Collapsed) ? false : true;
-                //ErrorList = Error;
             }
         }
 
@@ -102,6 +103,22 @@ namespace PokeGUI.ViewModels
         {
             get { return nameErrorVisibility; }
             set { SetProperty(ref nameErrorVisibility, value); }
+        }
+        private Visibility gridVisibility;
+        public Visibility GridVisibility
+        {
+            get { return gridVisibility; }
+            set { SetProperty(ref gridVisibility, value); }
+        }
+        private Visibility loadingListVisibility;
+        public Visibility LoadingListVisibility
+        {
+            get { return loadingListVisibility; }
+            set
+            {
+                SetProperty(ref loadingListVisibility, value);
+                //GridVisibility = (loadingListVisibility == Visibility.Visible) ? Visibility.Collapsed : Visibility.Visible;
+            }
         }
         private List<Pokemon> pokemonCollection;
         public List<Pokemon> PokemonCollection

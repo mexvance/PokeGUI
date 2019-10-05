@@ -13,7 +13,7 @@ namespace PokeGUI.Services
         public async Task<IEnumerable<Pokemon>> GetAllPokemonAsync()
         {
             var client = new HttpClient();
-            var response = await client.GetAsync("https://pokeapi.co/api/v2/pokemon?offset=0&limit=10");
+            var response = await client.GetAsync("https://pokeapi.co/api/v2/pokemon?offset=0&limit=151");
             var responseString = await response.Content.ReadAsStringAsync();
             var jsonPokeList = JObject.Parse(responseString)["results"];
 
@@ -32,6 +32,7 @@ namespace PokeGUI.Services
             var jsonPokeTypes = JObject.Parse(responseString)["types"];
             var pokeId = JObject.Parse(responseString)["id"].ToString();
             var types = new List<PokeType>();
+            var image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + pokeId + ".png";
             foreach (var pokeType in jsonPokeTypes)
             {
                 types.Add(new PokeType(pokeType["type"]["name"].ToString()));
@@ -41,7 +42,8 @@ namespace PokeGUI.Services
                 Name = name,
                 PokeId = Int32.Parse(pokeId),
                 Type1 = types[0],
-                Type2 = types.Count > 1 ? types[1] : null
+                Type2 = types.Count > 1 ? types[1] : null,
+                Image = image
             };
 
             return pokemon;
