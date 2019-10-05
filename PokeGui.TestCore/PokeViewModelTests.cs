@@ -63,7 +63,8 @@ namespace PokeTest.TestCore
         public void filterPokemonByName()
         {
             var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object);
-            //Thread.Sleep(500); //to async load pokemon list
+            pokedexViewModel.LoadPokemonTask.Wait();
+
 
             pokedexViewModel.PokemonNameFilter = "b";
 
@@ -75,6 +76,7 @@ namespace PokeTest.TestCore
         public void CanFilterPokemonByType()
         {
             var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object);
+            pokedexViewModel.LoadPokemonTask.Wait();
 
             pokedexViewModel.SelectedPokeType = PokeTypeConstants.Dragon;
 
@@ -88,6 +90,7 @@ namespace PokeTest.TestCore
         public void CanFilterByTypeAndName()
         {
             var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object);
+            pokedexViewModel.LoadPokemonTask.Wait();
             pokedexViewModel.PokemonNameFilter = "d";
             pokedexViewModel.SelectedPokeType = PokeTypeConstants.Electric;
 

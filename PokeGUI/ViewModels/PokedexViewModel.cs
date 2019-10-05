@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PokeGUI.ViewModels
 {
@@ -15,13 +16,26 @@ namespace PokeGUI.ViewModels
         public PokedexViewModel(IPokemonRegistry pokemonRegistry)
         {
             this.pokemonRegistry = pokemonRegistry;
-            LoadAsync();
+            LoadPokemonTask = LoadAsync();
         }
-        public async void LoadAsync()
+        public Task LoadAsync()
         {
-            PokemonCollection = new List<Pokemon>(await pokemonRegistry.GetAllPokemonAsync());
+            return Task.Run( async () =>
+            {
+                PokemonCollection = new List<Pokemon>(await pokemonRegistry.GetAllPokemonAsync());
+            });
 
         }
+
+        private Task loadPokemonTask;
+        public Task LoadPokemonTask
+        {
+            get { return loadPokemonTask; }
+            set {
+                SetProperty(ref loadPokemonTask, value); 
+            }
+        }
+
 
 
         private string pokemonNameFilter;
