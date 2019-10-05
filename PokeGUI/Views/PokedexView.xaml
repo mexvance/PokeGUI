@@ -9,6 +9,7 @@
       prism:ViewModelLocator.AutoWireViewModel="True">
 
     <Grid>
+
         <DataGrid ItemsSource="{Binding PokemonCollection}"
                   AutoGenerateColumns="false">
             <DataGrid.Columns>

@@ -24,6 +24,9 @@ namespace PokeGUI.ViewModels
         }
 
         private ObservableCollection<Pokemon> pokemonCollection;
+        public string PokemonNameFilter;
+
+
 
         public ObservableCollection<Pokemon> PokemonCollection
         {
@@ -32,6 +35,9 @@ namespace PokeGUI.ViewModels
                 SetProperty(ref pokemonCollection, value);
             }
         }
+
+
+        public ObservableCollection<Pokemon> PokemonFilteredCollection;
 
     }
 }
