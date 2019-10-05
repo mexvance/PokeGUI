@@ -37,6 +37,24 @@ namespace PokeTest.TestCore
                 Name = "ccc",
                 Type1 = PokeTypeConstants.Dragon
             });
+            samplePokemonList.Add(new Pokemon
+            {
+                Name = "ddd",
+                Type1 = PokeTypeConstants.Electric
+            });
+            samplePokemonList.Add(new Pokemon
+            {
+                Name = "dab",
+                Type1 = PokeTypeConstants.Dark,
+                Type2 = PokeTypeConstants.Electric
+
+            });
+            samplePokemonList.Add(new Pokemon
+            {
+                Name = "dac",
+                Type1 = PokeTypeConstants.Electric,
+                Type2 = PokeTypeConstants.Bug
+            });
             mockPokeRegistry = new Mock<IPokemonRegistry>();
             mockPokeRegistry.Setup(r => r.GetAllPokemonAsync()).ReturnsAsync(samplePokemonList);
         }
@@ -63,8 +81,20 @@ namespace PokeTest.TestCore
 
             pokedexViewModel.PokemonFilteredCollection.Count.Should().Be(1);
             pokedexViewModel.PokemonFilteredCollection.First().Name.Should().Be("ccc");
+        }
 
 
+        [Test]
+        public void CanFilterByTypeAndName()
+        {
+            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object);
+            pokedexViewModel.PokemonNameFilter = "a";
+            pokedexViewModel.SelectedPokeType = PokeTypeConstants.Electric;
+
+            pokedexViewModel.PokemonFilteredCollection.Count.Should().Be(3);
+            pokedexViewModel.PokemonFilteredCollection.Should().Contain(p => p.Name == "ddd");
+            pokedexViewModel.PokemonFilteredCollection.Should().Contain(p => p.Name == "dab");
+            pokedexViewModel.PokemonFilteredCollection.Should().Contain(p => p.Name == "dac");
         }
     }
 
