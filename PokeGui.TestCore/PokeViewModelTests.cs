@@ -17,6 +17,7 @@ namespace PokeTest.TestCore
     {
         private List<Pokemon> samplePokemonList;
         private Mock<IPokemonRegistry> mockPokeRegistry;
+        private Mock<IPokePdfService> mockPdfService;
 
         public PokeTypeRegistry pokeTypeConstants { get; private set; }
 
@@ -24,6 +25,7 @@ namespace PokeTest.TestCore
         public void setup()
         {
             pokeTypeConstants = new PokeTypeRegistry();
+            mockPdfService = new Mock<IPokePdfService>();
             samplePokemonList = new List<Pokemon>();
             samplePokemonList.Add(new Pokemon
             {
@@ -65,7 +67,7 @@ namespace PokeTest.TestCore
         [Test]
         public void filterPokemonByName()
         {
-            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object, pokeTypeConstants);
+            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object, pokeTypeConstants, mockPdfService.Object);
             pokedexViewModel.LoadPokemonTask.Wait();
 
 
@@ -78,7 +80,7 @@ namespace PokeTest.TestCore
         [Test]
         public void CanFilterPokemonByType()
         {
-            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object, pokeTypeConstants);
+            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object, pokeTypeConstants, mockPdfService.Object);
             pokedexViewModel.LoadPokemonTask.Wait();
 
             pokedexViewModel.SelectedPokeType = pokeTypeConstants.Dragon;
@@ -92,7 +94,7 @@ namespace PokeTest.TestCore
         [Test]
         public void CanFilterByTypeAndName()
         {
-            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object, pokeTypeConstants);
+            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object, pokeTypeConstants, mockPdfService.Object);
             pokedexViewModel.LoadPokemonTask.Wait();
             pokedexViewModel.PokemonNameFilter = "d";
             pokedexViewModel.SelectedPokeType = pokeTypeConstants.Electric;
