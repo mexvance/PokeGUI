@@ -1,9 +1,8 @@
 ﻿using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using PokeGUI.Data;
-using PokeGUI.Models;
 using PokeGUI.Services;
+using PokeGUI.Models;
 using PokeGUI.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -18,42 +17,46 @@ namespace PokeTest.TestCore
     {
         private List<Pokemon> samplePokemonList;
         private Mock<IPokemonRegistry> mockPokeRegistry;
+
+        public PokeTypeRegistry pokeTypeConstants { get; private set; }
+
         [SetUp]
         public void setup()
         {
+            pokeTypeConstants = new PokeTypeRegistry();
             samplePokemonList = new List<Pokemon>();
             samplePokemonList.Add(new Pokemon
             {
                 Name = "aaa",
-                Type1 = PokeTypeConstants.Fire
+                Type1 = pokeTypeConstants.Fire
             });
             samplePokemonList.Add(new Pokemon
             {
                 Name = "bbb",
-                Type1 = PokeTypeConstants.Water
+                Type1 = pokeTypeConstants.Water
             });
             samplePokemonList.Add(new Pokemon
             {
                 Name = "ccc",
-                Type1 = PokeTypeConstants.Dragon
+                Type1 = pokeTypeConstants.Dragon
             });
             samplePokemonList.Add(new Pokemon
             {
                 Name = "ddd",
-                Type1 = PokeTypeConstants.Electric
+                Type1 = pokeTypeConstants.Electric
             });
             samplePokemonList.Add(new Pokemon
             {
                 Name = "dab",
-                Type1 = PokeTypeConstants.Dark,
-                Type2 = PokeTypeConstants.Electric
+                Type1 = pokeTypeConstants.Dark,
+                Type2 = pokeTypeConstants.Electric
 
             });
             samplePokemonList.Add(new Pokemon
             {
                 Name = "dac",
-                Type1 = PokeTypeConstants.Electric,
-                Type2 = PokeTypeConstants.Bug
+                Type1 = pokeTypeConstants.Electric,
+                Type2 = pokeTypeConstants.Bug
             });
             mockPokeRegistry = new Mock<IPokemonRegistry>();
             mockPokeRegistry.Setup(r => r.GetAllPokemonAsync()).ReturnsAsync(samplePokemonList);
@@ -62,7 +65,7 @@ namespace PokeTest.TestCore
         [Test]
         public void filterPokemonByName()
         {
-            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object);
+            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object, pokeTypeConstants);
             pokedexViewModel.LoadPokemonTask.Wait();
 
 
@@ -75,10 +78,10 @@ namespace PokeTest.TestCore
         [Test]
         public void CanFilterPokemonByType()
         {
-            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object);
+            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object, pokeTypeConstants);
             pokedexViewModel.LoadPokemonTask.Wait();
 
-            pokedexViewModel.SelectedPokeType = PokeTypeConstants.Dragon;
+            pokedexViewModel.SelectedPokeType = pokeTypeConstants.Dragon;
 
 
             pokedexViewModel.PokemonFilteredCollection.Count.Should().Be(1);
@@ -89,10 +92,10 @@ namespace PokeTest.TestCore
         [Test]
         public void CanFilterByTypeAndName()
         {
-            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object);
+            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object, pokeTypeConstants);
             pokedexViewModel.LoadPokemonTask.Wait();
             pokedexViewModel.PokemonNameFilter = "d";
-            pokedexViewModel.SelectedPokeType = PokeTypeConstants.Electric;
+            pokedexViewModel.SelectedPokeType = pokeTypeConstants.Electric;
 
             pokedexViewModel.PokemonFilteredCollection.Count.Should().Be(3);
             pokedexViewModel.PokemonFilteredCollection.Should().Contain(p => p.Name == "ddd");

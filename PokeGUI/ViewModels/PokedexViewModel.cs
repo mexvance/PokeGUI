@@ -1,10 +1,8 @@
-﻿using PokeGUI.Models;
-using PokeGUI.Services;
+﻿using PokeGUI.Services;
+using PokeGUI.Models;
 using Prism.Mvvm;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PokeGUI.ViewModels
@@ -12,17 +10,22 @@ namespace PokeGUI.ViewModels
     public class PokedexViewModel : BindableBase
     {
         private readonly IPokemonRegistry pokemonRegistry;
+        private readonly PokeTypeRegistry pokeTypeRegistry;
 
-        public PokedexViewModel(IPokemonRegistry pokemonRegistry)
+        public PokedexViewModel(IPokemonRegistry pokemonRegistry, PokeTypeRegistry pokeTypeRegistry)
         {
             this.pokemonRegistry = pokemonRegistry;
+            this.pokeTypeRegistry = pokeTypeRegistry;
             LoadPokemonTask = LoadAsync();
         }
+        
         public Task LoadAsync()
         {
             return Task.Run( async () =>
             {
                 PokemonCollection = new List<Pokemon>(await pokemonRegistry.GetAllPokemonAsync());
+                PokeTypes = pokeTypeRegistry.All();
+                SelectedPokeType = pokeTypeRegistry.None;
             });
 
         }
@@ -36,6 +39,14 @@ namespace PokeGUI.ViewModels
             }
         }
 
+        private List<PokeType> pokeTypes;
+        public List<PokeType> PokeTypes
+        {
+            get { return pokeTypes; }
+            set {
+                SetProperty(ref pokeTypes, value); 
+            }
+        }
 
 
         private string pokemonNameFilter;
@@ -49,8 +60,6 @@ namespace PokeGUI.ViewModels
             }
         }
 
-
-
         private List<Pokemon> pokemonCollection;
         public List<Pokemon> PokemonCollection
         {
@@ -62,7 +71,6 @@ namespace PokeGUI.ViewModels
         }
 
         private PokeType selectedPokeType;
-
         public PokeType SelectedPokeType
         {
             get { return selectedPokeType; }
@@ -72,34 +80,37 @@ namespace PokeGUI.ViewModels
             }
         }
 
-
-
         public ObservableCollection<Pokemon> PokemonFilteredCollection
         {
-            get
-            {
-                return new ObservableCollection<Pokemon>(FilterPokemonByName(FilterPokemonByType()));
+            get {
+                var list1 = FilterPokemonByType();
+                var list2 = FilterPokemonByName(list1);
+                return new ObservableCollection<Pokemon>(list2 ?? new List<Pokemon>()); 
             }
         }
 
         public IEnumerable<Pokemon> FilterPokemonByName(List<Pokemon> pokeList)
         {
-            if (string.IsNullOrEmpty(PokemonNameFilter) == false)
-            {
-                return pokeList.FindAll(p => p.Name.StartsWith(PokemonNameFilter));
-            }
-            else
-            {
-                return pokeList;
-            }
+            return string.IsNullOrEmpty(PokemonNameFilter) == false
+                ? pokeList.FindAll(p => p.Name.StartsWith(PokemonNameFilter))
+                : pokeList;
         }
         public List<Pokemon> FilterPokemonByType()
         {
-            return SelectedPokeType != null
-                ? PokemonCollection.FindAll(p =>
-                        p.Type1 == SelectedPokeType || (p.Type2 != null ? p.Type2 == SelectedPokeType : false))
-                : PokemonCollection;
+            if (PokemonCollection != null)
+            {
+                return SelectedPokeType != null
+                   ? PokemonCollection.FindAll(p =>
+                           p.Type1.TypeName == SelectedPokeType.TypeName
+                           || (p.Type2 != null ? p.Type2.TypeName == SelectedPokeType.TypeName : false)
+                           || SelectedPokeType.TypeName == "none")
+                   : PokemonCollection;
+            } 
+            else
+            {
+                return new List<Pokemon>();
+            }
+           
         }
-
     }
 }

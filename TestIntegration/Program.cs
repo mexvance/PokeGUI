@@ -12,10 +12,10 @@ namespace TestIntegration
     {
         static void Main(string[] args)
         {
-            var dummy = new DummyPokemonRegistry();
-            var waitThis = dummy.GetAllPokemonAsync();
-            waitThis.Wait();
-            var pokelist = waitThis.Result;
+            //    var dummy = new DummyPokemonRegistry();
+            //    var waitThis = dummy.GetAllPokemonAsync();
+            //    waitThis.Wait();
+            //    var pokelist = waitThis.Result;
 
             // real call
             //var pokeReg = new PokemonRegistry();
@@ -23,6 +23,9 @@ namespace TestIntegration
             //test.Wait();
             //var res = test.Result;
             //var list = JsonConvert.SerializeObject(res);
+
+            var pdf = new PokePdfService();
+            pdf.WritePdf();
         }
     }
 }

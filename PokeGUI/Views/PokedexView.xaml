@@ -4,19 +4,40 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PokeGUI.Views"
+      xmlns:conv="clr-namespace:PokeGUI.Converters"
       mc:Ignorable="d" 
       xmlns:prism="http://prismlibrary.com/"
       prism:ViewModelLocator.AutoWireViewModel="True">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <DataGrid ItemsSource="{Binding PokemonCollection}"
-                  AutoGenerateColumns="false">
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+            <TextBox Text="{Binding PokemonNameFilter,UpdateSourceTrigger=PropertyChanged}" 
+                     Width="100"/>
+            <ComboBox ItemsSource="{Binding PokeTypes}"
+                      SelectedItem="{Binding SelectedPokeType, Mode=TwoWay}" >
+            </ComboBox>
+        </StackPanel>
+
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding PokemonFilteredCollection}"
+                  AutoGenerateColumns="false"
+                  CanUserAddRows="False"
+                  CanUserReorderColumns="False"
+                  CanUserSortColumns="False"
+                  CanUserResizeRows="False"
+                  CanUserResizeColumns="False"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Top">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID"
                                     IsReadOnly="True"
                                     Binding="{Binding PokeId}">
-                    
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Name"
                                     IsReadOnly="True"

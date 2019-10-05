@@ -11,5 +11,10 @@ namespace PokeGUI.Models
         {
             this.TypeName = typeName;
         }
+
+        public override string ToString()
+        {
+            return TypeName;
+        }
     }
 }
