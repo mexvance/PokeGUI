@@ -9,31 +9,64 @@
       mc:Ignorable="d" 
       xmlns:prism="http://prismlibrary.com/"
       prism:ViewModelLocator.AutoWireViewModel="True">
-
+    <UserControl.Resources>
+        <Style TargetType="DataGridCell">
+            <Style.Setters>
+                <Setter Property="TextBlock.TextAlignment" Value="Center" />
+                <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>
+                <Setter Property="TextBlock.FontSize" Value="18"/>
+            </Style.Setters>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
         <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Center">
+                    Grid.Row="0"
+                    HorizontalAlignment="Right"
+                    Width="600">
+            <TextBlock Text="Name" 
+                       FontSize="16"
+                       FontWeight="Bold"
+                       Width="300"
+                       Margin="0,0,15,0"/>
+            <TextBlock Text="Type 1" 
+                       FontSize="16"
+                       FontWeight="Bold"
+                       Width="100">
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Row="1"
+                    TextBlock.FontSize="16"
+                    HorizontalAlignment="Right"
+                    Width="600">
             <TextBox Text="{Binding PokemonNameFilter, ValidatesOnDataErrors=True, StringFormat=n3, UpdateSourceTrigger=PropertyChanged}" 
-                     Width="100"/>
+                     Width="300"
+                     
+                     Margin="0,0,15,0"/>
             <ComboBox ItemsSource="{Binding PokeTypes}"
-                      SelectedItem="{Binding SelectedPokeType, ValidatesOnDataErrors=True, Mode=TwoWay}" >
+                      SelectedItem="{Binding SelectedPokeType, ValidatesOnDataErrors=True, Mode=TwoWay}"
+                      Width="100">
             </ComboBox>
         </StackPanel>
         <TextBlock Text="{Binding NameError}"
                    HorizontalAlignment="Center"
-                   Grid.Row="1"
+                   Grid.Row="2"
+                   FontWeight="Bold"
+                   FontSize="14"
                    Visibility="{Binding NameErrorVisibility}"
                    Foreground="Red"/>
         
-        <DataGrid Grid.Row="2"
+        <DataGrid Grid.Row="3"
+                  AlternatingRowBackground="DeepSkyBlue"
+                  GridLinesVisibility="None"
                   ItemsSource="{Binding PokemonFilteredCollection}"
                   AutoGenerateColumns="false"
                   CanUserAddRows="False"
@@ -43,7 +76,9 @@
                   CanUserResizeColumns="False"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Top"
-                  Visibility="{Binding GridVisibility}">
+                  Visibility="{Binding GridVisibility}"
+                  Width="500"
+                    Margin="0,10,0,0">
             <DataGrid.Columns >
                 <DataGridTextColumn Header="ID"
                                     IsReadOnly="True"
@@ -51,21 +86,26 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Name"
                                     IsReadOnly="True"
+                                    Width="*"
                                     Binding="{Binding Name}">
 
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Type"
                                     IsReadOnly="True"
+                                    Width="*"
                                     Binding="{Binding Type1.TypeName}">
 
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Type"
                                     IsReadOnly="True"
+                                    Width="*"
                                     Binding="{Binding Type2.TypeName}">
 
                 </DataGridTextColumn>
                 <DataGridTemplateColumn Header="Image"
-                                    IsReadOnly="True">
+                                    IsReadOnly="True"
+                                        Width="Auto"
+                                        MinWidth="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Image Source="{Binding Image}"/>
@@ -75,7 +115,7 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Row="3"
+        <StackPanel Grid.Row="4"
                     Visibility="{Binding LoadingListVisibility}"
                     HorizontalAlignment="Center"
                     Background="Gray">
@@ -90,7 +130,7 @@
                        FontSize="40"
                        FontWeight="Bold"/>
         </StackPanel>
-        <Button Grid.Row="4"
+        <Button Grid.Row="5"
                 HorizontalAlignment="Center"
                 Width="300"
                 Content="Print Your Pokemon!"
