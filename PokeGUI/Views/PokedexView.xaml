@@ -17,6 +17,7 @@
                 <Setter Property="TextBlock.FontSize" Value="18"/>
             </Style.Setters>
         </Style>
+        <SolidColorBrush x:Key="TransparentGray" Color="Gray" Opacity="0.5" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -79,9 +80,10 @@
                   Visibility="{Binding GridVisibility}"
                   Width="500"
                     Margin="0,10,0,0">
-            <DataGrid.Columns >
+            <DataGrid.Columns>
                 <DataGridTextColumn Header="ID"
                                     IsReadOnly="True"
+                                    Width="40"
                                     Binding="{Binding PokeId}">
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Name"
@@ -118,16 +120,19 @@
         <StackPanel Grid.Row="4"
                     Visibility="{Binding LoadingListVisibility}"
                     HorizontalAlignment="Center"
-                    Background="Gray">
+                    Background="{StaticResource TransparentGray}"
+                    Width="500">
             <fa:ImageAwesome Icon="Cog" 
                          Spin="True" 
                          SpinDuration="2" 
                          Height="150"
                          Foreground="Cyan"
+                         HorizontalAlignment="Center"
                          Margin="0,10,0,10"/>
             <TextBlock Text="Loading Pokemon..."
                        Foreground="Cyan"
                        FontSize="40"
+                       HorizontalAlignment="Center"
                        FontWeight="Bold"/>
         </StackPanel>
         <Button Grid.Row="5"
