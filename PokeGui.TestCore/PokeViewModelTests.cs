@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PokeTest.TestCore
 {
@@ -19,6 +20,7 @@ namespace PokeTest.TestCore
         private Mock<IPokemonRegistry> mockPokeRegistry;
         private Mock<IPokePdfService> mockPdfService;
 
+        public Mock<IPokemonExcelService> mockExcelService { get; private set; }
         public PokeTypeRegistry pokeTypeConstants { get; private set; }
 
         [SetUp]
@@ -26,6 +28,7 @@ namespace PokeTest.TestCore
         {
             pokeTypeConstants = new PokeTypeRegistry();
             mockPdfService = new Mock<IPokePdfService>();
+            mockExcelService = new Mock<IPokemonExcelService>();
             samplePokemonList = new List<Pokemon>();
             samplePokemonList.Add(new Pokemon
             {
@@ -67,7 +70,8 @@ namespace PokeTest.TestCore
         [Test]
         public void filterPokemonByName()
         {
-            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object, pokeTypeConstants, mockPdfService.Object);
+            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object,
+                pokeTypeConstants, mockPdfService.Object, mockExcelService.Object);
             pokedexViewModel.LoadPokemonTask.Wait();
 
 
@@ -80,7 +84,8 @@ namespace PokeTest.TestCore
         [Test]
         public void CanFilterPokemonByType()
         {
-            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object, pokeTypeConstants, mockPdfService.Object);
+            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object,
+                pokeTypeConstants, mockPdfService.Object, mockExcelService.Object);
             pokedexViewModel.LoadPokemonTask.Wait();
 
             pokedexViewModel.SelectedPokeType = pokeTypeConstants.Dragon;
@@ -94,7 +99,8 @@ namespace PokeTest.TestCore
         [Test]
         public void CanFilterByTypeAndName()
         {
-            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object, pokeTypeConstants, mockPdfService.Object);
+            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object,
+                pokeTypeConstants, mockPdfService.Object, mockExcelService.Object);
             pokedexViewModel.LoadPokemonTask.Wait();
             pokedexViewModel.PokemonNameFilter = "d";
             pokedexViewModel.SelectedPokeType = pokeTypeConstants.Electric;
@@ -103,6 +109,28 @@ namespace PokeTest.TestCore
             pokedexViewModel.PokemonFilteredCollection.Should().Contain(p => p.Name == "ddd");
             pokedexViewModel.PokemonFilteredCollection.Should().Contain(p => p.Name == "dab");
             pokedexViewModel.PokemonFilteredCollection.Should().Contain(p => p.Name == "dac");
+        }
+
+        [Test]
+        public void CorrectResponceToInvalidType()
+        {
+            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object,
+                pokeTypeConstants, mockPdfService.Object, mockExcelService.Object);
+            var invalidPokeType = new PokeType("VerryBad");
+            mockExcelService.Setup(e => e.getStoredFilter()).Returns((string.Empty, invalidPokeType));
+            pokedexViewModel.LoadFilter.Execute();
+            pokedexViewModel.PokeTypeErrorVisibility.Should().Be(Visibility.Collapsed);
+        }
+
+        [Test]
+        public void CorrectResponceToValidType()
+        {
+            var pokedexViewModel = new PokedexViewModel(mockPokeRegistry.Object,
+                pokeTypeConstants, mockPdfService.Object, mockExcelService.Object);
+            var validPokeType = new PokeType("fire");
+            mockExcelService.Setup(e => e.getStoredFilter()).Returns((string.Empty, validPokeType));
+            pokedexViewModel.LoadFilter.Execute();
+            pokedexViewModel.PokeTypeErrorVisibility.Should().Be(Visibility.Visible);
         }
     }
 

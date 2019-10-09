@@ -21,6 +21,10 @@ namespace PokeGUI.Services
             {
                 var jsonFile = File.ReadAllText("../../../../pokeList.json");
                 var pokelist = JsonConvert.DeserializeObject<List<Pokemon>>(jsonFile);
+                foreach (var pokemon in pokelist)
+                {
+                    pokemon.Image = $"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{pokemon.PokeId}.png";
+                }
                 return pokelist;
             });
 

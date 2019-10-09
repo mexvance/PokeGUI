@@ -26,11 +26,11 @@ namespace PokeGUI
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.Register(typeof(IPokemonRegistry), typeof(PokemonRegistry));
+            containerRegistry.Register(typeof(IPokemonRegistry), typeof(DummyPokemonRegistry));
+            containerRegistry.Register(typeof(IPokemonExcelService), typeof(PokemonExcelService));
             containerRegistry.Register(typeof(IPokePdfService), typeof(PokePdfService));
             containerRegistry.Register(typeof(PokeTypeRegistry), typeof(PokeTypeRegistry));
-            containerRegistry.RegisterForNavigation<PokedexView>();
-            
+            containerRegistry.RegisterForNavigation<PokedexView>();            
         }
 
         protected override void ConfigureServiceLocator()

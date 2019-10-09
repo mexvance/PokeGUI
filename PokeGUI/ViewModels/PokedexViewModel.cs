@@ -15,14 +15,17 @@ namespace PokeGUI.ViewModels
         private readonly IPokemonRegistry pokemonRegistry;
         private readonly PokeTypeRegistry pokeTypeRegistry;
         private readonly IPokePdfService pokePdfService;
+        private readonly IPokemonExcelService pokemonExcelService;
 
         public PokedexViewModel(IPokemonRegistry pokemonRegistry, 
                                 PokeTypeRegistry pokeTypeRegistry,
-                                IPokePdfService pokePdfService)
+                                IPokePdfService pokePdfService,
+                                IPokemonExcelService pokemonExcelService)
         {
             this.pokemonRegistry = pokemonRegistry;
             this.pokeTypeRegistry = pokeTypeRegistry;
             this.pokePdfService = pokePdfService;
+            this.pokemonExcelService = pokemonExcelService;
             LoadPokemonTask = LoadAsync();
         }
         
@@ -65,8 +68,6 @@ namespace PokeGUI.ViewModels
             get => pokemonNameFilter;
             set
             {
-
-
                 SetProperty(ref pokemonNameFilter, value);
                 RaisePropertyChanged(nameof(PokemonFilteredCollection));
                 if (value.Contains(" "))
@@ -81,7 +82,6 @@ namespace PokeGUI.ViewModels
                 {
                     NameError = null;
                 }
-
             }
         }
 
@@ -97,6 +97,25 @@ namespace PokeGUI.ViewModels
             }
         }
 
+        private string pokeTypeError;
+        public string PokeTypeError
+        {
+            get { return pokeTypeError; }
+            set 
+            {
+                SetProperty(ref pokeTypeError, value);
+                ErrorDictionary[nameof(LoadFilter)] = value;
+                pokeTypeErrorVisibility = value?.Length > 0 ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+
+        private Visibility pokeTypeErrorVisibility;
+        public Visibility PokeTypeErrorVisibility
+        {
+            get { return pokeTypeErrorVisibility; }
+            set { SetProperty(ref pokeTypeErrorVisibility, value); }
+        }
+
 
         private Visibility nameErrorVisibility;
         public Visibility NameErrorVisibility
@@ -104,12 +123,14 @@ namespace PokeGUI.ViewModels
             get { return nameErrorVisibility; }
             set { SetProperty(ref nameErrorVisibility, value); }
         }
+
         private Visibility gridVisibility;
         public Visibility GridVisibility
         {
             get { return gridVisibility; }
             set { SetProperty(ref gridVisibility, value); }
         }
+
         private Visibility loadingListVisibility;
         public Visibility LoadingListVisibility
         {
@@ -120,6 +141,7 @@ namespace PokeGUI.ViewModels
                 //GridVisibility = (loadingListVisibility == Visibility.Visible) ? Visibility.Collapsed : Visibility.Visible;
             }
         }
+
         private List<Pokemon> pokemonCollection;
         public List<Pokemon> PokemonCollection
         {
@@ -179,7 +201,6 @@ namespace PokeGUI.ViewModels
             {
                 return new List<Pokemon>();
             }
-           
         }
 
         private DelegateCommand printPokemon;
@@ -189,5 +210,20 @@ namespace PokeGUI.ViewModels
             pokePdfService.WritePdf(PokemonFilteredCollection);
         }));
 
+        private DelegateCommand loadFilter;
+
+        public DelegateCommand LoadFilter => loadFilter ?? (loadFilter = new DelegateCommand(() => 
+        {
+            (PokemonNameFilter, SelectedPokeType) =  pokemonExcelService.getStoredFilter();
+
+            //View expects selected types from poketypes
+            SelectedPokeType = PokeTypes.Find(t => t.TypeName == SelectedPokeType.TypeName);
+
+            PokeTypeError = SelectedPokeType == null
+                ? "Selected Pokemon type is not supported"
+                : null;
+        })); 
+
+       
     }
 }

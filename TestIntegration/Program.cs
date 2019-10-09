@@ -10,22 +10,28 @@ namespace TestIntegration
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
-            var dummy = new DummyPokemonRegistry();
-            var waitThis = dummy.GetAllPokemonAsync();
-            waitThis.Wait();
-            var pokelist = waitThis.Result;
+            var pokeExcel = new PokemonExcelService();
+            pokeExcel.getStoredFilter();
 
-            //real call
-            //var pokeReg = new PokemonRegistry();
-            //var test = pokeReg.GetAllPokemonAsync();
-            //test.Wait();
-            //var res = test.Result;
-            //var list = JsonConvert.SerializeObject(res);
 
-            var pdf = new PokePdfService();
-            pdf.WritePdf(pokelist);
+
+            //var dummy = new DummyPokemonRegistry();
+            //var waitThis = dummy.GetAllPokemonAsync();
+            //waitThis.Wait();
+            //var pokelist = waitThis.Result;
+
+            ////real call
+            ////var pokeReg = new PokemonRegistry();
+            ////var test = pokeReg.GetAllPokemonAsync();
+            ////test.Wait();
+            ////var res = test.Result;
+            ////var list = JsonConvert.SerializeObject(res);
+
+            //var pdf = new PokePdfService();
+            //pdf.WritePdf(pokelist);
         }
     }
 }
