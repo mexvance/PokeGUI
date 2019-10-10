@@ -186,7 +186,6 @@ namespace PokeGUI.ViewModels
         }
 
         private DelegateCommand printPokemon;
-
         public DelegateCommand PrintPokemon => printPokemon ?? (printPokemon = new DelegateCommand(() =>
         {
             pokePdfService.WritePdf(PokemonFilteredCollection);
@@ -196,6 +195,12 @@ namespace PokeGUI.ViewModels
         public DelegateCommand ReadExcelForTypeName => readExcelForTypeName ?? (readExcelForTypeName = new DelegateCommand(() =>
         {
             (PokemonNameFilter, SelectedPokeType) = pokeExcelService.getFilterType();
+        }));
+
+        private DelegateCommand createExcelSheetOfPokemon;
+        public DelegateCommand CreateExcelSheetOfPokemon => createExcelSheetOfPokemon ?? (createExcelSheetOfPokemon = new DelegateCommand(() =>
+        {
+            pokeExcelService.WriteExcelSheet(PokemonFilteredCollection);
         }));
 
     }

@@ -151,7 +151,7 @@
                 HorizontalAlignment="Center"
                 Width="300"
                 Content="Save To Excel!"
-                Command="{Binding PrintPokemon}"/>
+                Command="{Binding CreateExcelSheetOfPokemon}"/>
 
     </Grid>
 </UserControl>
