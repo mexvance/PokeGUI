@@ -24,7 +24,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" MinHeight="300"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -139,6 +141,16 @@
                 HorizontalAlignment="Center"
                 Width="300"
                 Content="Print Your Pokemon!"
+                Command="{Binding PrintPokemon}"/>
+        <Button Grid.Row="6"
+                HorizontalAlignment="Center"
+                Width="300"
+                Content="Get Type From Excel!"
+                Command="{Binding ReadExcelForTypeName}"/>
+        <Button Grid.Row="7"
+                HorizontalAlignment="Center"
+                Width="300"
+                Content="Save To Excel!"
                 Command="{Binding PrintPokemon}"/>
 
     </Grid>

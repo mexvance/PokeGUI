@@ -15,14 +15,17 @@ namespace PokeGUI.ViewModels
         private readonly IPokemonRegistry pokemonRegistry;
         private readonly PokeTypeRegistry pokeTypeRegistry;
         private readonly IPokePdfService pokePdfService;
+        private readonly IPokeExcelService pokeExcelService;
 
         public PokedexViewModel(IPokemonRegistry pokemonRegistry, 
                                 PokeTypeRegistry pokeTypeRegistry,
-                                IPokePdfService pokePdfService)
+                                IPokePdfService pokePdfService,
+                                IPokeExcelService pokeExcelService)
         {
             this.pokemonRegistry = pokemonRegistry;
             this.pokeTypeRegistry = pokeTypeRegistry;
             this.pokePdfService = pokePdfService;
+            this.pokeExcelService = pokeExcelService;
             LoadPokemonTask = LoadAsync();
         }
         
@@ -187,6 +190,12 @@ namespace PokeGUI.ViewModels
         public DelegateCommand PrintPokemon => printPokemon ?? (printPokemon = new DelegateCommand(() =>
         {
             pokePdfService.WritePdf(PokemonFilteredCollection);
+        }));
+
+        private DelegateCommand readExcelForTypeName;
+        public DelegateCommand ReadExcelForTypeName => readExcelForTypeName ?? (readExcelForTypeName = new DelegateCommand(() =>
+        {
+            (PokemonNameFilter, SelectedPokeType) = pokeExcelService.getFilterType();
         }));
 
     }
