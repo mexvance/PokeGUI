@@ -1,12 +1,12 @@
 ﻿<UserControl x:Class="PokeGUI.Views.PokedexView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:PokeGUI.Views"
       xmlns:conv="clr-namespace:PokeGUI.Converters"
       xmlns:fa="http://schemas.fontawesome.io/icons/"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"
       xmlns:prism="http://prismlibrary.com/"
       prism:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
@@ -34,12 +34,12 @@
                     Grid.Row="0"
                     HorizontalAlignment="Right"
                     Width="600">
-            <TextBlock Text="Name" 
+            <TextBlock Text="Name"
                        FontSize="16"
                        FontWeight="Bold"
                        Width="300"
                        Margin="0,0,15,0"/>
-            <TextBlock Text="Type 1" 
+            <TextBlock Text="Type 1"
                        FontSize="16"
                        FontWeight="Bold"
                        Width="100">
@@ -50,9 +50,9 @@
                     TextBlock.FontSize="16"
                     HorizontalAlignment="Right"
                     Width="600">
-            <TextBox Text="{Binding PokemonNameFilter, ValidatesOnDataErrors=True, StringFormat=n3, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBox Text="{Binding PokemonNameFilter, ValidatesOnDataErrors=True, StringFormat=n3, UpdateSourceTrigger=PropertyChanged}"
                      Width="300"
-                     
+
                      Margin="0,0,15,0"/>
             <ComboBox ItemsSource="{Binding PokeTypes}"
                       SelectedItem="{Binding SelectedPokeType, ValidatesOnDataErrors=True, Mode=TwoWay}"
@@ -66,7 +66,7 @@
                    FontSize="14"
                    Visibility="{Binding NameErrorVisibility}"
                    Foreground="Red"/>
-        
+
         <DataGrid Grid.Row="3"
                   AlternatingRowBackground="DeepSkyBlue"
                   GridLinesVisibility="None"
@@ -124,9 +124,9 @@
                     HorizontalAlignment="Center"
                     Background="{StaticResource TransparentGray}"
                     Width="500">
-            <fa:ImageAwesome Icon="Cog" 
-                         Spin="True" 
-                         SpinDuration="2" 
+            <fa:ImageAwesome Icon="Cog"
+                         Spin="True"
+                         SpinDuration="2"
                          Height="150"
                          Foreground="Cyan"
                          HorizontalAlignment="Center"
@@ -145,7 +145,7 @@
         <Button Grid.Row="6"
                 HorizontalAlignment="Center"
                 Width="300"
-                Content="Get Type From Excel!"
+                Content="Load Pokemon From Excel"
                 Command="{Binding ReadExcelForTypeName}"/>
         <Button Grid.Row="7"
                 HorizontalAlignment="Center"

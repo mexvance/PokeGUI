@@ -19,7 +19,7 @@ namespace PokeGUI.Services
         {
             var service = new PokemonRegistry();
             var pokeNameFilter = string.Empty;
-            var pokeImageUrl = string.Empty;
+            var pokeUrl = string.Empty;
             var pokeList = new List<Pokemon>();
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Excel |*.xlsx";
@@ -33,11 +33,19 @@ namespace PokeGUI.Services
             using (var filteredPackage = new ExcelPackage(file))
             {
                 var worksheet = filteredPackage.Workbook.Worksheets[0];
-                for (int row = 4; row <= worksheet.Dimension.End.Row ; row++) {
-                    pokeNameFilter = worksheet.Cells[row, 2].Value.ToString();
-                    pokeImageUrl = "https://pokeapi.co/api/v2/pokemon/"+pokeNameFilter;
-                    var pokemon = await service.CreatePokemonObject(pokeNameFilter, pokeImageUrl);
+                if(worksheet.Cells[4, 2].Value == null)
+                {
+                    var pokemon = await service.CreatePokemonObject("Bad Format!", "https://pokeapi.co/api/v2/pokemon/unown");
                     pokeList.Add(pokemon);
+                }
+                else
+                {
+                    for (int row = 4; row <= worksheet.Dimension.End.Row ; row++) {
+                        pokeNameFilter = worksheet.Cells[row, 2].Value.ToString();
+                        pokeUrl = "https://pokeapi.co/api/v2/pokemon/"+pokeNameFilter;
+                        var pokemon = await service.CreatePokemonObject(pokeNameFilter, pokeUrl);
+                        pokeList.Add(pokemon);
+                    }
                 }
             }
             return pokeList;
