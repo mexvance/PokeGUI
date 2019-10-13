@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
-        Title="MainWindowView" Width="800">
+        Title="MainWindowView" Height="800"  Width="1500">
     <Window.Resources>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Background" Value="#373737" />
@@ -59,7 +59,7 @@
                 Grid.Row="1"
                 Command="{Binding GoToPokedex}"
                 Visibility="{Binding GoToPokedexVisibility}"/>
-    
+
         <ContentControl Grid.Row="1"
                         prism:RegionManager.RegionName="ContentRegion" />
 

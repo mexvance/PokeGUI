@@ -13,17 +13,30 @@ namespace PokeGUI.Services
 {
     class PokeExcelService : IPokeExcelService
     {
+        public FileInfo fileName { get; set; }
         public (string, PokeType) getFilterType()
         {
             var pokeNameFilter = string.Empty;
+            var pokeNameList = new List<string>();
             var pokeTypeFilter = new PokeType("none");
-            var fileName = "C:/Users/mexva/source/repos/PokeGUI/PokeGUI/Excell/PokeSearchFilter.xlsx";
-            FileInfo file = new FileInfo(fileName);
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Excel |*.xlsx";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                fileName = new FileInfo(openFileDialog.FileName);
+            }
+            FileInfo file = new FileInfo(fileName.FullName);
+
+            var row = 3;
             using (var filteredPackage = new ExcelPackage(file))
             {
                 var worksheet = filteredPackage.Workbook.Worksheets[0];
-                pokeNameFilter = worksheet.Cells["A2"].Value.ToString();
-                pokeTypeFilter = new PokeType(worksheet.Cells["B2"].Value.ToString());
+                for (int i = 3; i <= worksheet.Dimension.End.Row ;i++) {
+                    pokeNameFilter = worksheet.Cells[row, 2].Value.ToString();
+                    pokeTypeFilter = new PokeType(worksheet.Cells[row, 3].Value.ToString());
+                    row++;
+                }
             }
             return (pokeNameFilter, pokeTypeFilter);
         }
@@ -54,6 +67,7 @@ namespace PokeGUI.Services
                     worksheet.Cells[row, 3].Value = pokemon.Type1;
                     worksheet.Cells[row, 4].Value = pokemon.Type2;
                     worksheet.Cells[row, 5].Value = pokemon.Image;
+                    row++;
                 }
 
                 worksheet.Cells["A1:E2"].Merge = true;
