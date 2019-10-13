@@ -82,14 +82,20 @@ namespace PokeGUI.Services
 
                 worksheet.Cells["A1:E2"].Merge = true;
                 worksheet.Cells["A1"].Style.Font.Bold = true;
-                worksheet.Cells["A1"].Style.Font.Color.SetColor(Color.Blue);
+                worksheet.Cells["A1"].Style.Font.Color.SetColor(Color.White);
                 worksheet.Cells["A1"].Style.Font.Size = 26.0F;
                 worksheet.Cells["A1"].Style.ShrinkToFit = true;
+
+                worksheet.Cells["A3:E3"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                worksheet.Cells["A3:E3"].Style.Fill.BackgroundColor.SetColor(Color.DarkRed);
+                worksheet.Cells["A3:E3"].Style.Font.Color.SetColor(Color.White);
+                worksheet.Row(3).Style.Font.Bold = true;
+                worksheet.Cells[worksheet.Dimension.Address].Style.Font.Name = "Bahnschrift Light SemiCondensed";
 
                 worksheet.Cells[worksheet.Dimension.Address].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
                 worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
-                worksheet.Cells["A1"].Style.Fill.PatternType = ExcelFillStyle.LightGray;
+                worksheet.Cells["A1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 worksheet.Cells["A2:E2"].Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
 
                 SaveFile(newPackage);
