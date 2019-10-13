@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PokeGUI.Services
 {
@@ -9,6 +10,6 @@ namespace PokeGUI.Services
     {
         bool WriteExcelSheet(IEnumerable<Pokemon> pokemonCollection);
 
-        (string, PokeType) getFilterType();
+       Task<List<Pokemon>> getPokemonCollection();
     }
 }

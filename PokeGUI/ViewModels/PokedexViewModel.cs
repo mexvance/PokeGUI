@@ -17,7 +17,7 @@ namespace PokeGUI.ViewModels
         private readonly IPokePdfService pokePdfService;
         private readonly IPokeExcelService pokeExcelService;
 
-        public PokedexViewModel(IPokemonRegistry pokemonRegistry, 
+        public PokedexViewModel(IPokemonRegistry pokemonRegistry,
                                 PokeTypeRegistry pokeTypeRegistry,
                                 IPokePdfService pokePdfService,
                                 IPokeExcelService pokeExcelService)
@@ -28,7 +28,7 @@ namespace PokeGUI.ViewModels
             this.pokeExcelService = pokeExcelService;
             LoadPokemonTask = LoadAsync();
         }
-        
+
         public Task LoadAsync()
         {
             LoadingListVisibility = Visibility.Visible;
@@ -48,7 +48,7 @@ namespace PokeGUI.ViewModels
         {
             get { return loadPokemonTask; }
             set {
-                SetProperty(ref loadPokemonTask, value); 
+                SetProperty(ref loadPokemonTask, value);
             }
         }
 
@@ -57,7 +57,7 @@ namespace PokeGUI.ViewModels
         {
             get { return pokeTypes; }
             set {
-                SetProperty(ref pokeTypes, value); 
+                SetProperty(ref pokeTypes, value);
             }
         }
 
@@ -127,7 +127,7 @@ namespace PokeGUI.ViewModels
         public List<Pokemon> PokemonCollection
         {
             get { return pokemonCollection; }
-            set { 
+            set {
                 SetProperty(ref pokemonCollection, value);
                 RaisePropertyChanged(nameof(PokemonFilteredCollection));
             }
@@ -157,7 +157,7 @@ namespace PokeGUI.ViewModels
             get {
                 var list1 = FilterPokemonByType();
                 var list2 = FilterPokemonByName(list1);
-                return new ObservableCollection<Pokemon>(list2 ?? new List<Pokemon>()); 
+                return new ObservableCollection<Pokemon>(list2 ?? new List<Pokemon>());
             }
         }
 
@@ -177,12 +177,12 @@ namespace PokeGUI.ViewModels
                            || (p.Type2 != null ? p.Type2.TypeName == SelectedPokeType.TypeName : false)
                            || SelectedPokeType.TypeName == "none")
                    : PokemonCollection;
-            } 
+            }
             else
             {
                 return new List<Pokemon>();
             }
-           
+
         }
 
         private DelegateCommand printPokemon;
@@ -192,9 +192,10 @@ namespace PokeGUI.ViewModels
         }));
 
         private DelegateCommand readExcelForTypeName;
-        public DelegateCommand ReadExcelForTypeName => readExcelForTypeName ?? (readExcelForTypeName = new DelegateCommand(() =>
+        public DelegateCommand ReadExcelForTypeName => readExcelForTypeName ?? (readExcelForTypeName = new DelegateCommand(async () =>
         {
-            (PokemonNameFilter, SelectedPokeType) = pokeExcelService.getFilterType();
+            PokemonCollection = await pokeExcelService.getPokemonCollection();
+            SelectedPokeType = pokeTypeRegistry.None;
         }));
 
         private DelegateCommand createExcelSheetOfPokemon;

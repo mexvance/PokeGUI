@@ -8,17 +8,19 @@ using PokeGUI.Models;
 using System.Windows.Forms;
 using System.Drawing;
 using OfficeOpenXml.Style;
+using System.Threading.Tasks;
 
 namespace PokeGUI.Services
 {
     class PokeExcelService : IPokeExcelService
     {
         public FileInfo fileName { get; set; }
-        public (string, PokeType) getFilterType()
+        public async Task<List<Pokemon>> getPokemonCollection()
         {
+            var service = new PokemonRegistry();
             var pokeNameFilter = string.Empty;
-            var pokeNameList = new List<string>();
-            var pokeTypeFilter = new PokeType("none");
+            var pokeImageUrl = string.Empty;
+            var pokeList = new List<Pokemon>();
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Excel |*.xlsx";
 
@@ -28,17 +30,17 @@ namespace PokeGUI.Services
             }
             FileInfo file = new FileInfo(fileName.FullName);
 
-            var row = 3;
             using (var filteredPackage = new ExcelPackage(file))
             {
                 var worksheet = filteredPackage.Workbook.Worksheets[0];
-                for (int i = 3; i <= worksheet.Dimension.End.Row ;i++) {
+                for (int row = 4; row <= worksheet.Dimension.End.Row ; row++) {
                     pokeNameFilter = worksheet.Cells[row, 2].Value.ToString();
-                    pokeTypeFilter = new PokeType(worksheet.Cells[row, 3].Value.ToString());
-                    row++;
+                    pokeImageUrl = "https://pokeapi.co/api/v2/pokemon/"+pokeNameFilter;
+                    var pokemon = await service.CreatePokemonObject(pokeNameFilter, pokeImageUrl);
+                    pokeList.Add(pokemon);
                 }
             }
-            return (pokeNameFilter, pokeTypeFilter);
+            return pokeList;
         }
 
         public bool WriteExcelSheet(IEnumerable<Pokemon> pokemonCollection)
